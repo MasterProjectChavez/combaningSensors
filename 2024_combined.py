@@ -2,7 +2,14 @@
 import RPi.GPIO as GPIO
 import time
 
+#Buzzers Setup
 Buzzer = 11
+
+#Button setup
+BtnPin = 11
+Gpin   = 12
+Rpin   = 13
+
 Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 
 CL = [0, 131, 147, 165, 175, 196, 211, 248]		# Frequency of Low C notes
@@ -99,8 +106,6 @@ def loop(): #Normal behavior
         
     loop()
         
-        
-
 def destory():
     Buzz.stop()					# Stop the passive buzzer
     GPIO.output(Buzzer, 1)		# Set passive Buzzer pin to High

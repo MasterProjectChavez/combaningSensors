@@ -3,13 +3,14 @@
     import time
 
     Buzzer = 11
+    Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 
     CL = [0, 131, 147, 165, 175, 196, 211, 248]		# Frequency of Low C notes
 
     CM = [0, 262, 294, 330, 350, 393, 441, 495]		# Frequency of Middle C notes
 
     CH = [0, 525, 589, 661, 700, 786, 882, 990]		# Frequency of High C notes
-    """
+    """ Deprecated code
     song_1 = [	CM[3], CM[5], CM[6], CM[3], CM[2], CM[3], CM[5], CM[6], # Notes of song1
                 CH[1], CM[6], CM[5], CM[1], CM[3], CM[2], CM[2], CM[3], 
                 CM[5], CM[2], CM[3], CM[3], CL[6], CL[6], CL[6], CM[1],
@@ -65,7 +66,7 @@
         time.sleep(x)
 
     def loop(): #Normal behavior
-        """
+        """ Deprecated code
         while True:
             #    Playing song 1...
             for i in range(1, len(song_1)):		# Play song 1
@@ -78,13 +79,18 @@
                 Buzz.ChangeFrequency(song_2[i]) # Change the frequency along the song note
                 time.sleep(beat_2[i] * 0.5)     # delay a note for beat * 0.5s
         """
-        while True: #Keeps the ultrasonic sensor on standby
+        standby=True;
+        while standby: #Keeps the ultrasonic sensor on standby when nobody is within 50 cm of the thermostat
             dis = distance()
             print (dis, 'cm')
             print ('')
+            if dis<50
+                standby=false
             time.sleep(0.3)
-            
-        while True:
+        
+        incrementTen=Temperature/10 #Defines temperature in increments of 10
+        incremenetOne=Temperature%10 #Defines temperature in increments of 1 (between 0 and 9)
+        for 
             
             
 

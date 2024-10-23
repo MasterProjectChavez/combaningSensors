@@ -14,7 +14,7 @@ def setup(buttonPin, localGpin, localRpin, thisType):
 	Gpin=localGpin
 	Rpin=localRpin
 	type=thisType #0=increase temperature button, 1=decrease temperature button
-	GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+	#GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
 	GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
 	GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
 	GPIO.setup(BtnPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)    # Set BtnPin's mode is input, and pull up to high level(3.3V)

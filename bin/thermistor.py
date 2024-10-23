@@ -5,7 +5,7 @@ import time
 import math
 
 DO = 17
-GPIO.setmode(GPIO.BCM)
+#GPIO.setmode(GPIO.BCM)
 
 def setup(sensorInput):
 	DO=sensorInput

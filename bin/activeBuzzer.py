@@ -7,7 +7,7 @@ activePin = 11 #Pin conflict
 def setup(activePin):#Sets up Active buzzer
     global BuzzerPin
     BuzzerPin = activePin
-    GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+    #GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
     GPIO.setup(activePin, GPIO.OUT)
     GPIO.output(activePin, GPIO.HIGH)
     

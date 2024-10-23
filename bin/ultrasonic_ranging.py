@@ -9,7 +9,7 @@ ECHO = 12
 def setup(trigPin, echoPin):
 	TRIG=trigPin
 	ECHO=echoPin
-	GPIO.setmode(GPIO.BOARD)
+	#GPIO.setmode(GPIO.BOARD)
 	GPIO.setup(TRIG, GPIO.OUT)
 	GPIO.setup(ECHO, GPIO.IN)
 

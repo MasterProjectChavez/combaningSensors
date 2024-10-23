@@ -6,7 +6,7 @@ thisPin=11 #Override with input from setup
 
 def setup(passivePin): # Sets up Passive buzzer
     thisPin=passivePin
-    GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
+    #GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
     GPIO.setup(passivePin, GPIO.OUT)	# Set pins' mode is output
     global Buzz						# Assign a global variable to replace GPIO.PWM 
     Buzz = GPIO.PWM(passivePin, 440)	# 440 is initial frequency.

@@ -13,7 +13,7 @@ sonicEchoPin=18
 
 #Buzzers Setup
 activePin = 27
-passivePin= 17
+passivePin= 5
 
 #Button1 setup
 buttonPin = 26

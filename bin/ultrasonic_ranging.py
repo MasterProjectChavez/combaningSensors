@@ -6,10 +6,12 @@ import time
 TRIG = 11
 ECHO = 12
 
-def setup(outputPin, inputPin):
+def setup(trigPin, echoPin):
+	TRIG=trigPin
+	ECHO=echoPin
 	GPIO.setmode(GPIO.BOARD)
-	GPIO.setup(outputPin, GPIO.OUT)
-	GPIO.setup(inputPin, GPIO.IN)
+	GPIO.setup(TRIG, GPIO.OUT)
+	GPIO.setup(ECHO, GPIO.IN)
 
 def distance():
 	GPIO.output(TRIG, 0)

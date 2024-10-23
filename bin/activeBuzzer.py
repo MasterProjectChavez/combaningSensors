@@ -3,7 +3,6 @@ import time
 
 #Buzzers Setup
 activePin = 11 #Pin conflict
-passivePin= 11 #Pin conflict
 
 def setupActive(activePin):#Sets up Active buzzer
     global BuzzerPin

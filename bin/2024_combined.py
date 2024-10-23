@@ -6,8 +6,8 @@ import button
 import thermistor as temperatureSensor
 
 #Ultrasonic sensor setup
-sonicOutPin=11 #Pin conflict
-sonicInPin=12 #Pin conflict
+sonicTrigPin=12 #Pin conflict
+sonicEchoPin=11 #Pin conflict
 
 #Buzzers Setup
 activePin = 11 #Pin conflict
@@ -160,7 +160,7 @@ def destory():
 if __name__ == '__main__':		# Program start from here
     setupPassive(passivePin) #Sets up passive buzzer
     setupActive(activePin) #Sets up active buzzer
-    sonicSensor.setup(sonicOutPin, sonicInPin) #Sets up ultrasonic sensor
+    sonicSensor.setup(sonicTrigPin, sonicEchoPin) #Sets up ultrasonic sensor
     button.setup(buttonPin, buttonGPin, buttonRPin) #Sets up increase temperature button
     button.setup(button2Pin, button2GPin,button2RPin) #Sets up decrease temperature button
     temperatureSensor.setup()

@@ -4,12 +4,12 @@ import time
 #Buzzers Setup
 activePin = 11 #Pin conflict
 
-def setup(activePin):#Sets up Active buzzer
+def setup(thisPin):#Sets up Active buzzer
     global BuzzerPin
-    BuzzerPin = activePin
+    BuzzerPin = thisPin
     #GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
-    GPIO.setup(activePin, GPIO.OUT)
-    GPIO.output(activePin, GPIO.HIGH)
+    GPIO.setup(thisPin, GPIO.OUT)
+    GPIO.output(thisPin, GPIO.HIGH)
     
 def on(): #Turns Active Buzzer on
     GPIO.output(BuzzerPin, GPIO.LOW)

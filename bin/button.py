@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
+import combined
+import activeBuzzer
 
 BtnPin = 11
 Gpin   = 12
 Rpin   = 13
+type=-1
 
 
-def setup(buttonPin, localGpin, localRpin):
+def setup(buttonPin, localGpin, localRpin, thisType):
 	BtnPin=buttonPin
 	Gpin=localGpin
 	Rpin=localRpin
+	type=thisType #0=increase temperature button, 1=decrease temperature button
 	GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
 	GPIO.setup(Gpin, GPIO.OUT)     # Set Green Led Pin mode to output
 	GPIO.setup(Rpin, GPIO.OUT)     # Set Red Led Pin mode to output
@@ -23,9 +27,15 @@ def Led(x):
 	if x == 1:
 		GPIO.output(Rpin, 0)
 		GPIO.output(Gpin, 1)
+	if type==1:
+		combined.Temperature+=1
+	elif type==0:
+		combined.Temperature-=1
+	activeBuzzer.beep()
 
 def detect(chn):
 	Led(GPIO.input(BtnPin))
+	return True
 
 def loop():
 	while True:

@@ -4,7 +4,7 @@ import time
 #Buzzers Setup
 activePin = 11 #Pin conflict
 
-def setupActive(activePin):#Sets up Active buzzer
+def setup(activePin):#Sets up Active buzzer
     global BuzzerPin
     BuzzerPin = activePin
     GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
@@ -22,3 +22,6 @@ def beep(x): #Prompts the active buzzer to beep
     time.sleep(x)
     off()
     time.sleep(x)
+
+def stop():
+    GPIO.output(activePin, GPIO.HIGH) #Set active buzzer pin to High

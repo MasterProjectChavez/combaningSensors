@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import time
 import ultrasonic_ranging as sonicSensor
 import button
+import thermistor as temperatureSensor
 
 #Ultrasonic sensor setup
 sonicOutPin=11 #Pin conflict
@@ -15,12 +16,15 @@ passivePin= 11 #Pin conflict
 #Button1 setup
 buttonPin = 11 #Pin conflict
 buttonGPin   = 12 #Pin conflict
-buttonRPin   = 13
+buttonRPin   = 13 #Pin conflict
 
 #Button2 setup
 button2Pin = 11 #Pin conflict
 button2GPin   = 12 #Pin conflict
 button2RPin   = 13 #Pin conflict
+
+#Analog temperature sensor setup
+temperaturePin = 17
 
 Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 
@@ -159,6 +163,7 @@ if __name__ == '__main__':		# Program start from here
     sonicSensor.setup(sonicOutPin, sonicInPin) #Sets up ultrasonic sensor
     button.setup(buttonPin, buttonGPin, buttonRPin) #Sets up increase temperature button
     button.setup(button2Pin, button2GPin,button2RPin) #Sets up decrease temperature button
+    temperatureSensor.setup()
     try:
         loop()
     except KeyboardInterrupt:  	# When 'Ctrl+C' is pressed, the child program destroy() will be  executed.

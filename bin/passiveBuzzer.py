@@ -1,6 +1,7 @@
 
 import RPi.GPIO as GPIO
 import time
+
 def setupPassive(passivePin): # Sets up Passive buzzer
     GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
     GPIO.setup(passivePin, GPIO.OUT)	# Set pins' mode is output

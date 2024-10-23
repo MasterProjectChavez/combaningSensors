@@ -86,6 +86,7 @@ def destory():
     GPIO.cleanup()				# Release resource
 
 if __name__ == '__main__':		# Program start from here
+    GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
     passiveBuzzer.setup(passivePin) #Sets up passive buzzer
     activeBuzzer.setup(activePin) #Sets up active buzzer
     sonicSensor.setup(sonicTrigPin, sonicEchoPin) #Sets up ultrasonic sensor

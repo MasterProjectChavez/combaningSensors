@@ -8,25 +8,25 @@ import passiveBuzzer
 import activeBuzzer
 
 #Ultrasonic sensor setup
-sonicTrigPin=12 #Pin conflict
-sonicEchoPin=11 #Pin conflict
+sonicTrigPin=17
+sonicEchoPin=18
 
 #Buzzers Setup
-activePin = 11 #Pin conflict
-passivePin= 11 #Pin conflict
+activePin = 27
+passivePin= 17
 
 #Button1 setup
-buttonPin = 11 #Pin conflict
-buttonGPin   = 12 #Pin conflict
-buttonRPin   = 13 #Pin conflict
+buttonPin = 26
+buttonGPin   = "3V3" #Assigned to voltage pin
+buttonRPin   = "GND" #Assigned to default
 
 #Button2 setup
-button2Pin = 11 #Pin conflict
-button2GPin   = 12 #Pin conflict
-button2RPin   = 13 #Pin conflict
+button2Pin = 22
+button2GPin   = "3V3" #Assigned to voltage pin
+button2RPin   = "GND" #Assigned to default
 
 #Analog temperature sensor setup
-temperaturePin = 17
+temperaturePin = 13
 
 Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 

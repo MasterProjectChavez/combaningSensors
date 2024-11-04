@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
 import time
-import ultrasonic_ranging as sonicSensor
-import button
-import thermistor as temperatureSensor
-import passiveBuzzer
-import activeBuzzer
+
+#For the thermistor
+import PCF8591 as ADC
+import math
 
 #Ultrasonic sensor setup
 sonicTrigPin=11
@@ -41,7 +40,7 @@ beat_1=[] #Initializes an array for beats of type integer
 def loop(): #Normal behavior
     standby=True
     while standby: #Keeps the ultrasonic sensor on standby when nobody is within 50 cm of the thermostat
-        dis = sonicSensor.distance() #Stores the value from ultrasonic sensor
+        dis = distance() #Stores the value from ultrasonic sensor
         print (dis, 'cm') # Prints to console
         print ('')
         if dis<50: #If someone is detected within 50 cm (half a meter), then the thernometer will beep
@@ -64,7 +63,7 @@ def loop(): #Normal behavior
 
     #Executes instructions to the passive buzzer
     for i in range(1, len(song_1)):		# Play song 1 (executes the previously written instructions)
-        passiveBuzzer.Buzz.ChangeFrequency(song_1[i])	# Change the frequency along the song note
+        Buzz.ChangeFrequency(song_1[i])	# Change the frequency along the song note
         time.sleep(beat_1[i] * 0.5)		# delay a note for beat * 0.5s
         
     #Resets song_1 and beat_1 for the next iteration
@@ -79,17 +78,13 @@ def loop(): #Normal behavior
     loop() #Return to ultrasonic sensor
         
 def destory():		
-    passiveBuzzer.stop() # Stop the passive buzzer
-    activeBuzzer.stop()
-    sonicSensor.destroy() #Cleanup
-    button.destroy() #Cleanup
+    passiveBuzzerStop() # Stop the passive buzzer
+    activeBuzzerStop()
+    ultrasonicDestroy() #Cleanup
+    buttonDestroy() #Cleanup
     GPIO.cleanup()				# Release resource
 
 ### button.py
-import RPi.GPIO as GPIO
-import combined
-import activeBuzzer
-
 BtnPin = 11
 Gpin   = 12
 Rpin   = 13
@@ -114,40 +109,29 @@ def Led(x):
 		GPIO.output(Rpin, 0)
 		GPIO.output(Gpin, 1)
 	if type==1:
-		combined.Temperature+=1
+		Temperature+=1
 	elif type==0:
-		combined.Temperature-=1
-	activeBuzzer.beep()
+		Temperature-=1
+	beep()
 
 def detect(chn):
 	Led(GPIO.input(BtnPin))
 	return True
 
-def loop():
+def buttonLoop():
 	while True:
 		pass
 
-def destroy():
+def buttonDestroy():
 	GPIO.output(Gpin, GPIO.HIGH)       # Green led off
 	GPIO.output(Rpin, GPIO.HIGH)       # Red led off
 	GPIO.cleanup()                     # Release resource
 
-if __name__ == '__main__':     # Program start from here
-	setup()
-	try:
-		loop()
-	except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
-		destroy()
-
-
 ###activeBuzzer.py
-import RPi.GPIO as GPIO
-import time
-
 #activeBuzzer Setup
 activePin = 11 #Pin conflict
 
-def setup(thisPin):#Sets up Active buzzer
+def activeBuzzerSetup(thisPin):#Sets up Active buzzer
     global BuzzerPin
     BuzzerPin = thisPin
     #GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
@@ -166,14 +150,13 @@ def beep(x): #Prompts the active buzzer to beep
     off()
     time.sleep(x)
 
+def activeBuzzerStop():
+    GPIO.output(activePin, GPIO.HIGH) #Set active buzzer pin to High
+
 ###passiveBuzzer.py
-
-import RPi.GPIO as GPIO
-import time
-
 thisPin=11 #Override with input from setup
 
-def setup(passivePin): # Sets up Passive buzzer
+def passiveBuzzerSetup(passivePin): # Sets up Passive buzzer
     thisPin=passivePin
     #GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
     GPIO.setup(passivePin, GPIO.OUT)	# Set pins' mode is output
@@ -181,24 +164,17 @@ def setup(passivePin): # Sets up Passive buzzer
     Buzz = GPIO.PWM(passivePin, 440)	# 440 is initial frequency.
     Buzz.start(50)					# Start Buzzer pin with 50% duty ration
 
-def stop():
+def passiveBuzzerStop():
     Buzz.stop()
     GPIO.output(thisPin, 1)		# Set passive Buzzer pin to High
 
-def stop():
-    GPIO.output(activePin, GPIO.HIGH) #Set active buzzer pin to High
 
 ###thermistor.py
-#!/usr/bin/env python3
-import PCF8591 as ADC
-import RPi.GPIO as GPIO
-import time
-import math
 
 DO = 17
 #GPIO.setmode(GPIO.BCM)
 
-def setup(sensorInput):
+def thermistorSetup(sensorInput):
 	DO=sensorInput
 	ADC.setup(0x48)
 	GPIO.setup(DO, GPIO.IN)
@@ -217,7 +193,7 @@ def Print(x):
 		print ('************')
 		print ('')
 
-def loop():
+def thermistorLoop():
 	status = 1
 	tmp = 1
 	while True:
@@ -247,23 +223,11 @@ def loop():
 
 		time.sleep(0.2)
 
-if __name__ == '__main__':
-	try:
-		setup()
-		loop()
-	except KeyboardInterrupt: 
-		pass	
-
 ###ultrasonic_ranging.py
-#!/usr/bin/env python3
-
-import RPi.GPIO as GPIO
-import time
-
 TRIG = 11
 ECHO = 12
 
-def setup(trigPin, echoPin):
+def ultrasonicSetup(trigPin, echoPin):
 	TRIG=trigPin
 	ECHO=echoPin
 	#GPIO.setmode(GPIO.BOARD)
@@ -289,32 +253,25 @@ def distance():
 	during = time2 - time1
 	return during * 340 / 2 * 100
 
-def loop():
+def ultrasonicLoop():
 	while True:
 		dis = distance()
 		print (dis, 'cm')
 		print ('')
 		time.sleep(0.3)
 
-def destroy():
+def ultrasonicDestroy():
 	GPIO.cleanup()
-
-if __name__ == "__main__":
-	setup()
-	try:
-		loop()
-	except KeyboardInterrupt:
-		destroy()
 
 
 if __name__ == '__main__':		# Program start from here
     GPIO.setmode(GPIO.BOARD)		# Numbers GPIOs by physical location
-    passiveBuzzer.setup(passivePin) #Sets up passive buzzer
-    activeBuzzer.setup(activePin) #Sets up active buzzer
-    sonicSensor.setup(sonicTrigPin, sonicEchoPin) #Sets up ultrasonic sensor
-    button.setup(buttonPin, buttonGPin, buttonRPin, 0) #Sets up increase temperature button
-    button.setup(button2Pin, button2GPin,button2RPin, 1) #Sets up decrease temperature button
-    temperatureSensor.setup(temperaturePin)
+    passiveBuzzerSetup(passivePin) #Sets up passive buzzer
+    activeBuzzerSetup(activePin) #Sets up active buzzer
+    ultrasonicSetup(sonicTrigPin, sonicEchoPin) #Sets up ultrasonic sensor
+    setupButton(buttonPin, buttonGPin, buttonRPin, 0) #Sets up increase temperature button
+    setupButton(button2Pin, button2GPin,button2RPin, 1) #Sets up decrease temperature button
+    thermistorSetup(temperaturePin)
     try:
         loop()
     except KeyboardInterrupt:  	# When 'Ctrl+C' is pressed, the child program destroy() will be  executed.

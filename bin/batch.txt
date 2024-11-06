@@ -1,0 +1,2 @@
+sudo nano /home/pi/.bashrc
+sudo python /home/pi/${PATH_TO_YOUR_PYTHON_FILE}

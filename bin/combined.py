@@ -3,16 +3,16 @@ import RPi.GPIO as GPIO
 import time
 import ultrasonic_ranging as sonicSensor
 import button
-import thermistor as temperatureSensor
 import passiveBuzzer
 import activeBuzzer
+import temperatureSensor
 
 #Ultrasonic sensor setup
-sonicTrigPin=17
-sonicEchoPin=18
+sonicTrigPin=9
+sonicEchoPin=20
 
 #Buzzers Setup
-activePin = 27
+activePin = 7
 passivePin= 5
 
 #Button1 setup
@@ -25,10 +25,14 @@ button2Pin = 22
 button2GPin   = "3V3" #Assigned to voltage pin
 button2RPin   = "GND" #Assigned to default
 
-#Analog temperature sensor setup
-temperaturePin = 13
+#Digital temperature sensor setup
+#N/A
 
-Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
+#Output
+outputPin=33
+
+
+setTemperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 
 CL = [0, 131, 147, 165, 175, 196, 211, 248]		# Frequency of Low C notes
 
@@ -50,17 +54,17 @@ def loop(): #Normal behavior
 
 
     
-    incrementTen=Temperature/10 #Defines temperature in increments of 10
-    incremenetOne=Temperature%10 #Defines temperature in increments of 1 (between 0 and 9)
+    incrementTen=setTemperature/10 #Defines temperature in increments of 10
+    incremenetOne=setTemperature%10 #Defines temperature in increments of 1 (between 0 and 9)
     
     #Writes instructions for the passive buzzer
     for incrementTen in range(0, incrementTen):
         song_1.append(CH[1])
-        beat_1.append(1)
+        beat_1.append(2)
 
     for incrementOne in range(0, incrementOne):
         song_1.append(CL[1])
-        beat_1.append(2)
+        beat_1.append(3)
 
     #Executes instructions to the passive buzzer
     for i in range(1, len(song_1)):		# Play song 1 (executes the previously written instructions)
@@ -74,8 +78,12 @@ def loop(): #Normal behavior
     for time in range(0, 20): #Waits for input from buzzer for 20 seconds.
         time.sleep(1)
         
-        
-    
+    measuredTemperature=temperatureSensor.read()    
+    if(measuredTemperature<setTemperature):
+        GPIO.output(outputPin, GPIO.HIGH)
+    elif(measuredTemperature>setTemperature):
+        GPIO.output(outputPin, GPIO.LOW)
+
     loop() #Return to ultrasonic sensor
         
 def destory():		

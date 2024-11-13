@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
-import time
+import time as t
 import ultrasonic_ranging as sonicSensor
 import button
 import thermistor as temperatureSensor
 import passiveBuzzer
 import activeBuzzer
-
-GPIO.setwarnings(False)
 
 #Ultrasonic sensor setup
 sonicTrigPin=11
@@ -28,7 +26,7 @@ button2Pin = 15
 #button2RPin   = "GND" #Assigned to default
 
 #Analog temperature sensor setup
-temperaturePin = 33
+temperaturePin = 13
 
 Temperature=70 #Default temperature of sensor is 70 degrees Fahrenheit
 
@@ -48,7 +46,7 @@ def loop(): #Normal behavior
         print ('')
         if dis<50: #If someone is detected within 50 cm (half a meter), then the thernometer will beep
             standby=False #Breaks our of the while loop to proceed
-        time.sleep(1)  
+        t.sleep(1)  
 
 
     
